@@ -42,7 +42,7 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'title' => 'required',
             'image' => 'nullable|image',
             'date' => 'required',
@@ -50,7 +50,13 @@ class PostsController extends Controller
         ]);
 
         $post = Post::add($request->all());
+        $post->uploadImage($request->file('image'));
+        $post->setCategory($request->get('category_id'));
+        $post->setTags($request->get('tags'));
+        $post->toggleStatus($request->get('status'));
+        $post->toggleFeatured($request->get('is_featured'));
 
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -72,7 +78,7 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        $post = Posts::find($id);
+        $post = Post::find($id);
 
         return view('admin.posts.edit', ['$post' => $post]);
     }
@@ -97,6 +103,7 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Post::find($id)->remove();
+        return redirect()->route('posts.index');
     }
 }

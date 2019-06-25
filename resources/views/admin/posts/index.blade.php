@@ -47,14 +47,14 @@
                     <tr>
                       <td>{{$post->id}}</td>
                       <td>{{$post->title}}</td>
-                      <td>{{$post->category}}</td>
-                      <td>Laravel, PHP</td>
+                      <td>{{$post->getCategoryTitle()}}</td>
+                      <td>{{$post->getTagsTitles()}}</td>
                       <td>
                         <img src="{{$post->getImage()}}" alt="" width="100">
                       </td>
                       <td><a href="{{route('posts.edit', $post->id)}}" class="fa fa-pencil"></a> 
 
-                        {{ Form::open(['route' => ['postss.destroy', $post->id], 'method' => 'delete']) }}
+                        {{ Form::open(['route' => ['posts.destroy', $post->id], 'method' => 'delete']) }}
                         <button class="delete" onclick="return confirm('Вы уверены?')"><i class="fa fa-remove"></i></button>
                         {{ Form::close() }}
 
