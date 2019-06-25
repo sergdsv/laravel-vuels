@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Post;
+use App\Tag;
+use App\Category;
 class PostsController extends Controller
 {
     /**
@@ -26,7 +28,10 @@ class PostsController extends Controller
      */
     public function create()
     {
-        return view('admin.posts.create');
+        $categories = Category::pluck('title', 'id')->all();
+        $tags = Tag::pluck('title', 'id')->all();
+
+        return view('admin.posts.create',['tags'=>$tags, 'categories'=>$categories]);
     }
 
     /**
@@ -37,7 +42,16 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'title' => 'required',
+            'image' => 'nullable|image',
+            'date' => 'required',
+            'content' => 'required',
+        ]);
+
+        $post = Post::add($request->all());
+
+        dd($post->title);
     }
 
     /**

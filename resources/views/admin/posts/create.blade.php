@@ -21,12 +21,13 @@
           <h3 class="box-title">Добавляем статью</h3>
         </div>
 
-        {{Form::open(['route'=>'posts.create'])}}
+        {{Form::open(['route'=>'posts.store'])}}
         <div class="box-body">
           <div class="col-md-6">
+            @include('admin.errors')
             <div class="form-group">
               <label for="exampleInputEmail1">Название</label>
-              <input type="text" name="title" class="form-control" id="exampleInputEmail1" placeholder="">
+              <input type="text" name="title" class="form-control" id="exampleInputEmail1" placeholder="" value="{{old('title')}}">
             </div>
 
             <div class="form-group">
@@ -37,28 +38,21 @@
             </div>
             <div class="form-group">
               <label>Категория</label>
-              <select class="form-control select2" style="width: 100%;">
-                <option selected="selected">Alabama</option>
-                <option>Alaska</option>
-                <option>California</option>
-                <option>Delaware</option>
-                <option>Tennessee</option>
-                <option>Texas</option>
-                <option>Washington</option>
-              </select>
+              {{Form::select('category_id', $categories, null, [
+                'class' => 'form-control select2',
+                'style' => 'width: 100%;'
+                ])}}
+              {{Form::close()}}
             </div>
             <div class="form-group">
               <label>Теги</label>
-              <select class="form-control select2" multiple="multiple" data-placeholder="Выберите теги" style="width: 100%;">
-                <option>Alabama</option>
-                <option>Alaska</option>
-                <option>California</option>
-                <option>Delaware</option>
-                <option>Tennessee</option>
-                <option>Texas</option>
-                <option>Washington</option>
-              </select>
-            </div>
+              {{Form::select('tag_id', $tags, null, [
+                'data-placeholder' => 'Выберите теги',
+                'class' => 'form-control select2',
+                'style' => 'width: 100%;',
+                'multiple' => 'multiple'
+                ])}}
+              {{Form::close()}}
             <!-- Date -->
             <div class="form-group">
               <label>Дата:</label>
@@ -67,7 +61,7 @@
                 <div class="input-group-addon">
                   <i class="fa fa-calendar"></i>
                 </div>
-                <input type="text" class="form-control pull-right" id="datepicker">
+                <input type="text" class="form-control pull-right" id="datepicker" name="date" value="{{old('date')}}">
               </div>
               <!-- /.input group -->
             </div>
@@ -75,7 +69,7 @@
             <!-- checkbox -->
             <div class="form-group">
               <label>
-                <input type="checkbox" class="minimal">
+                <input type="checkbox" class="minimal" name="is_featured">
               </label>
               <label>
                 Рекомендовать
@@ -85,7 +79,7 @@
             <!-- checkbox -->
             <div class="form-group">
               <label>
-                <input type="checkbox" class="minimal">
+                <input type="checkbox" class="minimal" name="is_status">
               </label>
               <label>
                 Черновик
@@ -95,7 +89,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label for="exampleInputEmail1">Полный текст</label>
-              <textarea name="" id="" cols="30" rows="10" class="form-control"></textarea>
+              <textarea name="content" id="" cols="30" rows="10" class="form-control"></textarea>
           </div>
         </div>
       </div>

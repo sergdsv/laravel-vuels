@@ -45,15 +45,21 @@
 
                 @foreach ($posts as $post)
                     <tr>
-                      <td>1</td>
-                      <td>Как изучить Laravel на основе Блога?
-                      </td>
-                      <td>Обучение</td>
+                      <td>{{$post->id}}</td>
+                      <td>{{$post->title}}</td>
+                      <td>{{$post->category}}</td>
                       <td>Laravel, PHP</td>
                       <td>
-                        <img src="/img/boxed-bg.jpg" alt="" width="100">
+                        <img src="{{$post->getImage()}}" alt="" width="100">
                       </td>
-                      <td><a href="{{route('posts.edit', $post->id)}}" class="fa fa-pencil"></a> <a href="#" class="fa fa-remove"></a></td>
+                      <td><a href="{{route('posts.edit', $post->id)}}" class="fa fa-pencil"></a> 
+
+                        {{ Form::open(['route' => ['postss.destroy', $post->id], 'method' => 'delete']) }}
+                        <button class="delete" onclick="return confirm('Вы уверены?')"><i class="fa fa-remove"></i></button>
+                        {{ Form::close() }}
+
+
+                      </td>
                     </tr>
                 @endforeach
                 </tfoot>

@@ -13,7 +13,7 @@ class Post extends Model
 
     use Sluggable;
 
-    protected $fillable = ['title', 'content'];
+    protected $fillable = ['title', 'content', 'date'];
 
     public function category()
     {
