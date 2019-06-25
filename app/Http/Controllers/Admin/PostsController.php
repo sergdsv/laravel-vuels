@@ -51,7 +51,6 @@ class PostsController extends Controller
 
         $post = Post::add($request->all());
 
-        dd($post->title);
     }
 
     /**

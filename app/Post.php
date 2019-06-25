@@ -145,6 +145,11 @@ class Post extends Model
         return $this->setStandart;
     }
 
+    public function setDateAttribute($value)
+    {
+        dd($value);
+    }
+
 
 
 
