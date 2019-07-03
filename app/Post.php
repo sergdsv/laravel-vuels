@@ -65,8 +65,8 @@ class Post extends Model
 
     public function edit($fields)
     {
-        $post->fill($lields);
-        $post->save();
+        $this->fill($fields);
+        $this->save();
     }
 
     public function remove()
@@ -171,15 +171,21 @@ class Post extends Model
     public function toggleFeatured($value)
     {
         if($value == null){
-           return $this->setFeatured();
+           return $this->setStandart();
         }
-        return $this->setStandart();
+        return $this->setFeatured();
     }
 
     public function setDateAttribute($value)
     {
         $date = Carbon::createFromFormat('d/m/y', $value)->format('Y-m-d');
         $this->attributes['date'] = $date;
+    }
+
+    public function getDateAttribute($value)
+    {
+        $date = Carbon::createFromFormat('Y-m-d', $value)->format('d/m/y');
+        return $date;
     }
 
 

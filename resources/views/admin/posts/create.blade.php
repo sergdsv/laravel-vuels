@@ -29,26 +29,25 @@
               <label for="exampleInputEmail1">Название</label>
               <input type="text" class="form-control" id="exampleInputEmail1" placeholder="" name="title" value="{{old('title')}}">
             </div>
-            
             <div class="form-group">
               <label for="exampleInputFile">Лицевая картинка</label>
-              <input type="file" id="exampleInputFile" name="image">
+              <input type="file" id="exampleInputFile" name="image" value="{{old('image')}}>
 
               <p class="help-block">Какое-нибудь уведомление о форматах..</p>
             </div>
             <div class="form-group">
               <label>Категория</label>
               {{Form::select('category_id',
-                $categories, 
-                null, 
+                $categories,
+                null,
                 ['class' => 'form-control select2'])
               }}
             </div>
             <div class="form-group">
               <label>Теги</label>
-              {{Form::select('tags[]', 
-                $tags, 
-                null, 
+              {{Form::select('tags[]',
+                $tags,
+                null,
                 ['class' => 'form-control select2', 'multiple'=>'multiple','data-placeholder'=>'Выберите теги'])
               }}
             </div>
@@ -68,7 +67,7 @@
             <!-- checkbox -->
             <div class="form-group">
               <label>
-                <input type="checkbox" class="minimal" name="is_featured">
+                <input type="checkbox" class="minimal" name="is_featured" {{ old('is_featured') == 'on' ? 'checked' : '' }}>
               </label>
               <label>
                 Рекомендовать
@@ -78,7 +77,7 @@
             <!-- checkbox -->
             <div class="form-group">
               <label>
-                <input type="checkbox" class="minimal" name="status">
+                <input type="checkbox" class="minimal" name="status" {{ old('status') == 'on' ? 'checked' : '' }}>
               </label>
               <label>
                 Черновик
@@ -94,7 +93,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label for="exampleInputEmail1">Полный текст</label>
-              <textarea name="content" id="" cols="30" rows="10" class="form-control" ></textarea>
+              <textarea name="content" id="" cols="30" rows="10" class="form-control" >{{old('content')}}</textarea>
           </div>
         </div>
       </div>
