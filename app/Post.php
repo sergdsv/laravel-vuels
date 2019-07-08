@@ -4,9 +4,9 @@ namespace App;
 
 use Carbon\Carbon;
 use Storage;
-//use Illuminate\Sappord\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Auth;
 
 class Post extends Model
 {
@@ -38,6 +38,11 @@ class Post extends Model
     	);
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
        /**
      * Return the sluggable configuration array for this model.
      *
@@ -57,7 +62,7 @@ class Post extends Model
         // или можно написать $post = new self;
         $post = new static;
         $post->fill($fields);
-        $post->user_id = 1;
+        $post->user_id = Auth::user()->id;
         $post->save();
 
         return $post;
@@ -107,6 +112,14 @@ class Post extends Model
             return $this->category->title;
         }
         return 'Нет категории';
+    }
+
+        public function getCategoryId()
+    {
+        if($this->category != null){
+            return $this->category->id;
+        }
+        return null;
     }
 
     public function getTagsTitles()
@@ -188,7 +201,42 @@ class Post extends Model
         return $date;
     }
 
+    public function getDate()
+    {
+        return Carbon::createFromFormat('d/m/y', $this->date)->format('F d, Y');
+    }
 
 
+    public function hasPrevious()
+    {
+        return self::where('id', '<', $this->id)->max('id');
+    }
+
+    public function getPrevious()
+    {
+        $postID = $this->hasPrevious();
+        return self::find($postID);
+    }
+
+    public function hasNext()
+    {
+        return self::where('id', '>', $this->id)->min('id');
+    }
+
+    public function getNext()
+    {
+        $postID = $this->hasNext();
+        return self::find($postID);
+    }
+
+    public function related()
+    {
+        return self::all()->except($this->id);
+    }
+
+     public function getComments()
+    {
+        return $this->comments()->where('status', 1)->get();
+    }
 
 }

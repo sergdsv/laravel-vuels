@@ -3,17 +3,18 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Comment extends Model
 {
     public function post()
     {
-    	return $this->hasOne(Post:class);
+    	return $this->belongsTo(Post::class);
     }
 
     public function user()
     {
-    	return $this->hasOne(User::class);
+    	return $this->belongsTo(User::class);
     }
 
     public function allow()
@@ -28,9 +29,10 @@ class Comment extends Model
         $this->save();
     }
 
-    public function toggleStatus($value)
+    public function toggleStatus()
     {
-        if($this->status = 0){
+
+        if($this->status == 0){
             return $this->allow();
         }
         return $this->disAllow();
@@ -40,4 +42,5 @@ class Comment extends Model
     {
     	$this->delete();
     }
+
 }

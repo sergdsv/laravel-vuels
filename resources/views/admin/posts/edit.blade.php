@@ -45,7 +45,7 @@
               <label>Категория</label>
              {{Form::select('category_id',
                 $categories,
-                $post->category->id,
+                $post->getCategoryId(),
                 ['class' => 'form-control select2'
                 ])
               }}
