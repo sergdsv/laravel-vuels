@@ -18,7 +18,9 @@ Route::get('/tag/{slug}', 'HomeController@tag')->name('post.tag');
 Route::get('/category/{slug}', 'HomeController@category')->name('post.category');
 Route::post('/subscribe', 'SubsController@subscribe');
 Route::get('/verify/{token}', 'SubsController@verify');
-
+Route::group(['prefix'=>'admin', 'namespace'=>'Admin'], function(){
+	Route::resource('/vposts', 'VpostController');
+});
 
 Route::group([
 	'middleware' => 'auth'
@@ -53,3 +55,6 @@ Route::group(['prefix'=>'admin', 'namespace'=>'Admin', 'middleware'=>'admin'], f
 	Route::resource('/subscribers', 'SubscribersController');
 
 });
+
+
+

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Auth;
 
+
 class Post extends Model
 {
     const IS_DRAFT = 0;
@@ -189,17 +190,25 @@ class Post extends Model
         return $this->setFeatured();
     }
 
-    public function setDateAttribute($value)
-    {
-        $date = Carbon::createFromFormat('d/m/y', $value)->format('Y-m-d');
-        $this->attributes['date'] = $date;
-    }
+    // public function setDateAttribute($value)
+    // {
 
-    public function getDateAttribute($value)
-    {
-        $date = Carbon::createFromFormat('Y-m-d', $value)->format('d/m/y');
-        return $date;
-    }
+    //     if(\DateTime::createFromFormat('d/m/y', $value) !== false){
+    //         $date = Carbon::createFromFormat('d/m/y', $value)->format('Y-m-d');
+    //         $this->attributes['date'] = $date;
+    //     }
+    //     $this->attributes['date'] = $value;
+
+    // }
+
+    // public function getDateAttribute($value)
+    // {
+    //     if(\DateTime::createFromFormat('Y-m-d', $value) !== false){
+    //         $date = Carbon::createFromFormat('Y-m-d', $value)->format('d/m/y');
+    //         return $date;
+    //     }
+
+    // }
 
     public function getDate()
     {

@@ -3,25 +3,25 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Post;
 use App\Tag;
 use App\Category;
-class PostsController extends Controller
+class VPostsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $posts = Post::all();
-
-        return view('admin.posts.index', ['posts' => $posts]);
-    }
 
     public function indexjson()
+    {
+        return view('admin.vposts.index');
+    }
+
+    public function index()
     {
         $posts = Post::with('category')->with('tags')->get();
 
@@ -35,10 +35,10 @@ class PostsController extends Controller
      */
     public function create()
     {
-        $categories = Category::pluck('title', 'id')->all();
-        $tags = Tag::pluck('title', 'id')->all();
+        $categories = Category::all();
+        $tags = Tag::all();
 
-        return view('admin.posts.create',['tags'=>$tags, 'categories'=>$categories]);
+        return response()->json(['tags'=>$tags, 'categories'=>$categories]);
     }
 
     /**
@@ -50,21 +50,32 @@ class PostsController extends Controller
     public function store(Request $request)
     {
 
-        $this->validate($request, [
-            'title' => 'required',
-            'image' => 'nullable|image',
-            'date' => 'required',
-            'content' => 'required',
-        ]);
+        // dd($request);
+        // $this->validate($request, [
+        //     'title' => 'required',
+        //     'image' => 'nullable|image',
+        //     'date' => 'required',
+        //     'content' => 'required',
+        // ]);
+        // dd($request->all());
+        // var_dump($request);
+        $area = json_decode($request->post);
 
-        $post = Post::add($request->all());
-        $post->uploadImage($request->file('image'));
-        $post->setCategory($request->get('category_id'));
-        $post->setTags($request->get('tags'));
-        $post->toggleStatus($request->get('status'));
-        $post->toggleFeatured($request->get('is_featured'));
+        $post = new Post;
 
-        return redirect()->route('posts.index');
+        $post->title = $area->title;
+        $post->content = $area->content;
+        $post->setCategory($area->category_id);
+        $post->date = $area->date;
+        $post->setTags($area->tags_id);
+        $post->uploadImage($request->image);
+        // $post->setCategory($request->get('category_id'));
+        // $post->setTags($request->get('tags'));
+        // $post->toggleStatus($request->get('status'));
+        // $post->toggleFeatured($request->get('is_featured'));
+        $post->save();
+        return $post;
+        
     }
 
     /**

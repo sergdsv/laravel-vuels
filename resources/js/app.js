@@ -7,6 +7,26 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+import VueRouter from 'vue-router';
+window.Vue.use(VueRouter);
+window.axios = require('axios');
+
+
+import PostsIndex from './components/posts/PostsIndex.vue';
+import PostsCreate from './components/posts/PostsCreate.vue';
+import PostsEdit from './components/posts/PostsEdit.vue';
+
+
+const routes = [
+    {path: '/', components: {postsIndex: PostsIndex}},
+    {path: '/create', component: PostsCreate, name: 'createPost'},
+    {path: '/edit/:id', component: PostsEdit, name: 'editPost'},
+]
+
+const router = new VueRouter({ routes })
+
+
+
 
 /**
  * The following block of code may be used to automatically register your
@@ -16,10 +36,12 @@ window.Vue = require('vue');
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-// const files = require.context('./', true, /\.vue$/i);
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
+// const files = require.context('./', true, /\.vue$/i)
+// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('example-component', require('./components/ExampleComponent.vue'));
+// Vue.component('imageselect-component', require('./components/ImageselectComponent.vue'));
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -27,6 +49,8 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
-    el: '#app',
-});
+// const app = new Vue({
+//     el: '#app',
+// });
+
+const app = new Vue({ router }).$mount('#app');

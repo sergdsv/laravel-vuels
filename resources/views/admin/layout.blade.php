@@ -6,6 +6,7 @@
   <title>AdminLTE 2 | Blank Page</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="/css/admin.css">
   <style>
       table.table form
@@ -23,6 +24,7 @@
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <!-- Site wrapper -->
+<div id="app">
 <div class="wrapper">
 
   <header class="main-header">
@@ -387,8 +389,9 @@
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>
 </div>
+</div>
 <!-- ./wrapper -->
-
+<script type="text/javascript" src="/js/app.js"></script>
 <script src="/js/admin.js"></script>
 <script src="/plugins/ckeditor/ckeditor.js"></script>
 <script src="/plugins/ckfinder/ckfinder.js"></script>
