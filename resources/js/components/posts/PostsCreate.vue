@@ -93,10 +93,9 @@
                     category_id: '',
                     tags_id: '',
                     date: '',
-                    content: '',
+                    content: ''
                 },
                 imageData: "",
-                resp: 'dsv',
                 csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content')
             }
         },
@@ -108,7 +107,6 @@
             var app = this;
             axios.get('/api/admin/vposts/create')
                 .then(function (resp) {
-                    // app.categories = resp.data.categories
                     app.categories = resp.data.categories
                     app.tags = resp.data.tags
                 })
@@ -144,18 +142,13 @@
 
         methods: {
             saveForm() {
+                var app = this;
                 event.preventDefault();
-                let app = this;
                 const config = {
                     headers: { 'Content-type': 'multipart/form-data' }
                 }
                 let formData = new FormData();
 
-                // formData.append('title', app.post.title)
-                // formData.append('category_id', app.post.category_id)
-                // formData.append('tags_id', app.post.tags_id)
-                // formData.append('date', app.post.date)
-                // formData.append('content', app.post.content)
                 formData.append('image', app.imageData)
                 formData.append('post', JSON.stringify(app.post))
 
@@ -166,8 +159,8 @@
                     url: '/api/admin/vposts',
                     data: formData,
                     headers: config
-                }).then(response => {
-                    console.log(response)
+                }).then(function(response) {
+                    app.$router.push({path: '/'});
                 }).catch(error => {
                     console.log(error.message);
                 })
@@ -187,7 +180,7 @@
                 reader.onload = (e) => {
                     // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
                     // Read image as base64 and set to imageData
-                    this.imageData = e.target.result;
+                    this.imageData = input.files[0];
                 }
                 // Start the reader job - read file as a data url (base64 format)
                 reader.readAsDataURL(input.files[0]);

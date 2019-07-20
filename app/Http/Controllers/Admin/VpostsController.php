@@ -50,18 +50,10 @@ class VPostsController extends Controller
     public function store(Request $request)
     {
 
-        // dd($request);
-        // $this->validate($request, [
-        //     'title' => 'required',
-        //     'image' => 'nullable|image',
-        //     'date' => 'required',
-        //     'content' => 'required',
-        // ]);
-        // dd($request->all());
-        // var_dump($request);
         $area = json_decode($request->post);
+        // $dd($request);
 
-        $post = new Post;
+        $post = Post::find($id);
 
         $post->title = $area->title;
         $post->content = $area->content;
@@ -69,13 +61,8 @@ class VPostsController extends Controller
         $post->date = $area->date;
         $post->setTags($area->tags_id);
         $post->uploadImage($request->image);
-        // $post->setCategory($request->get('category_id'));
-        // $post->setTags($request->get('tags'));
-        // $post->toggleStatus($request->get('status'));
-        // $post->toggleFeatured($request->get('is_featured'));
         $post->save();
         return $post;
-        
     }
 
     /**
@@ -98,12 +85,13 @@ class VPostsController extends Controller
     public function edit($id)
     {
 
+        // dd($id);
         $post = Post::find($id);
-        $categories = Category::pluck('title', 'id')->all();
-        $tags = Tag::pluck('title', 'id')->all();
-        $selectedTags = $post->tags->pluck('id')->all();
-
-        return view('admin.posts.edit', ['post' => $post, 'tags'=>$tags, 'categories'=>$categories, 'selectedTags'=>$selectedTags]);
+        $categories = Category::all();
+        $tags = Tag::all();
+        $selectedTags = $post->tags->all();
+        // dd($selectedTags);
+        return response()->json(['post'=>$post, 'tags'=>$tags, 'categories'=>$categories, 'selTags'=>$selectedTags]);
     }
 
     /**
@@ -115,22 +103,29 @@ class VPostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'title' => 'required',
-            'image' => 'nullable|image',
-            'date' => 'required',
-            'content' => 'required',
-        ]);
+
+        $area = json_decode($request->post);
+        // dd($area);
+
 
         $post = Post::find($id);
-        $post->edit($request->all());
-        $post->uploadImage($request->file('image'));
-        $post->setCategory($request->get('category_id'));
-        $post->setTags($request->get('tags'));
-        $post->toggleStatus($request->get('status'));
-        $post->toggleFeatured($request->get('is_featured'));
+        dd($area->tags);
 
-        return redirect()->route('posts.index');
+        $post->title = $area->title;
+        $post->content = $area->content;
+        $post->setCategory($area->category_id);
+        $post->date = $area->date;
+        $post->setTags($area->tags);
+        // $post->uploadImage($request->image);
+        // $post->save();
+        return $post;
+
+        // $post = Post::find($id);
+        // $post->edit($area);
+        // // $post->uploadImage($request->file('image'));
+        // $post->setCategory($area->category_id);
+        // $post->setTags($area->tags_id);
+        // return $post;
     }
 
     /**
@@ -142,6 +137,6 @@ class VPostsController extends Controller
     public function destroy($id)
     {
         Post::find($id)->remove();
-        return redirect()->route('posts.index');
+        return;
     }
 }
